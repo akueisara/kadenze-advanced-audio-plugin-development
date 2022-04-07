@@ -48,12 +48,11 @@ void KAPDelay::process(float* inAudio,
     const float dry = 1.0f - wet;
     const float feedbackMapped = juce::jmap(inFeedback, 0.0f, 1.0f, 0.0f, 0.95f);
     
-    // block level smoothing
-    const double delayTimeModulation = (0.003 + (0.002 * inModulationBuffer[0]));
-    
-    mTimeSmoothed = mTimeSmoothed - kParameterSmoothingCoeff_Generic * (mTimeSmoothed - inTime * delayTimeModulation);
-    
     for (int i = 0; i < inNumSamplesToRender; i++) {
+        
+        const double delayTimeModulation = (inTime + (0.002 * inModulationBuffer[i]));
+        
+        mTimeSmoothed = mTimeSmoothed - kParameterSmoothingCoeff_Fine * (mTimeSmoothed - delayTimeModulation);
         
         const double delayTimeInSamples = mTimeSmoothed * mSampleRate;
         
