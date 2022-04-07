@@ -10,7 +10,8 @@
 
 #pragma once
 
-const int maxBufferDelaySize = 2048;
+// The size has to be larger than delayTimeInSamples
+const int maxBufferDelaySize = 192000;
 
 class KAPDelay
 {

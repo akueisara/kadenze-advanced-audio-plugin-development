@@ -59,7 +59,7 @@ void KAPDelay::process(float* inAudio,
         
         mDelayIndex = mDelayIndex + 1;
         
-        if (mDelayIndex > maxBufferDelaySize) {
+        if (mDelayIndex >= maxBufferDelaySize) {
             mDelayIndex -= maxBufferDelaySize;
         }
     }
@@ -69,12 +69,12 @@ double KAPDelay::getInterpolatedSample(float inDelayTimeInSamples)
 {
     double readPosition = (double) mDelayIndex - inDelayTimeInSamples;
     
-    if (readPosition < 0) {
+    if (readPosition < 0.0f) {
         readPosition += maxBufferDelaySize;
     }
     
     int indexY0 = (int) readPosition - 1;
-    if (indexY0 < 0) {
+    if (indexY0 <= 0) {
         indexY0 += maxBufferDelaySize;
     }
     
@@ -85,7 +85,7 @@ double KAPDelay::getInterpolatedSample(float inDelayTimeInSamples)
     
     const float sampleY0 = mBuffer[indexY0];
     const float sampleY1 = mBuffer[indexY1];
-    const float t = (int)readPosition - readPosition;
+    const float t = readPosition - (int)readPosition;
     
     double outSample = kapLinearInterp(sampleY0, sampleY1, t);
     
