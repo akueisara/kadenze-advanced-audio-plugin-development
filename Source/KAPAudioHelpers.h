@@ -10,6 +10,9 @@
 
 #pragma once
 
+#define kParameterSmoothingCoeff_Generic 0.04
+#define kParameterSmoothingCoeff_Fine 0.002
+
 // The size has to be larger than delayTimeInSamples
 const static int maxBufferSize = 192000;
 
