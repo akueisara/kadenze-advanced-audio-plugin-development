@@ -10,6 +10,8 @@
 
 #include "KAPGain.h"
 
+#include <JuceHeader.h>
+
 KAPGain::KAPGain()
 {
     
