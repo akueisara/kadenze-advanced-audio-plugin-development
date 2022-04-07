@@ -22,6 +22,7 @@ KadenzeAudioPluginAudioProcessor::KadenzeAudioPluginAudioProcessor()
                        )
 #endif
 {
+    initializeDSP();
 }
 
 KadenzeAudioPluginAudioProcessor::~KadenzeAudioPluginAudioProcessor()
@@ -93,14 +94,16 @@ void KadenzeAudioPluginAudioProcessor::changeProgramName (int index, const juce:
 //==============================================================================
 void KadenzeAudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    for (int i = 0; i < 2; i++) {
+        mDelay[i]->setSampleRate(sampleRate);
+    }
 }
 
 void KadenzeAudioPluginAudioProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
+    for (int i = 0; i < 2; i++) {
+        mDelay[i].reset();
+    }
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -134,6 +137,8 @@ void KadenzeAudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& b
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
+    
+    int numSamples = buffer.getNumSamples();
 
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
@@ -142,8 +147,10 @@ void KadenzeAudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& b
     // when they first compile a plugin, but obviously you don't need to keep
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+        buffer.clear (i, 0, numSamples);
 
+
+    
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     // Make sure to reset the state if your inner loop is processing
@@ -153,11 +160,18 @@ void KadenzeAudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& b
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
-
+        
         mGain[channel]->process(channelData,
                                 0.5,
                                 channelData,
-                                buffer.getNumSamples());
+                                numSamples);
+        
+        mDelay[channel]->process(channelData,
+                                 0.25,
+                                 0.5,
+                                 0.35,
+                                 channelData,
+                                 numSamples);
         
         // ..do something to the data...
     }
@@ -192,6 +206,7 @@ void KadenzeAudioPluginAudioProcessor::initializeDSP()
 {
     for (int i = 0; i < 2; i++) {
         mGain[i].reset(new KAPGain());
+        mDelay[i].reset(new KAPDelay());
     }
 }
 

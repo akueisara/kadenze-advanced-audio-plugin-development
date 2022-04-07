@@ -9,8 +9,8 @@
 */
 
 #include "KAPDelay.h"
-
 #include <JuceHeader.h>
+#include "KAPAudioHelpers.h"
 
 KAPDelay::KAPDelay()
 :   mSampleRate(-1),
@@ -31,7 +31,7 @@ void KAPDelay::setSampleRate(double inSampleRate)
 
 void KAPDelay::reset()
 {
-    juce::zeromem(mBuffer, sizeof(double) * 2048);
+    juce::zeromem(mBuffer, sizeof(double) * maxBufferDelaySize);
 }
 
 void KAPDelay::process(float* inAudio,
@@ -44,4 +44,50 @@ void KAPDelay::process(float* inAudio,
     const float wet = inWetDry;
     const float dry = 1.0f - wet;
     const float feedbackMapped = juce::jmap(inFeedback, 0.0f, 1.0f, 0.0f, 0.95f);
+    
+    for (int i = 0; i < inNumSamplesToRender; i++) {
+        
+        const double delayTimeInSamples = inTime * mSampleRate;
+        
+        const double sample = getInterpolatedSample(delayTimeInSamples);
+        
+        mBuffer[mDelayIndex] = inAudio[i] + (mFeedbackSample * feedbackMapped);
+        
+        mFeedbackSample = sample;
+        
+        outAudio[i] = inAudio[i] * dry + sample * wet;
+        
+        mDelayIndex = mDelayIndex + 1;
+        
+        if (mDelayIndex > maxBufferDelaySize) {
+            mDelayIndex -= maxBufferDelaySize;
+        }
+    }
+}
+
+double KAPDelay::getInterpolatedSample(float inDelayTimeInSamples)
+{
+    double readPosition = (double) mDelayIndex - inDelayTimeInSamples;
+    
+    if (readPosition < 0) {
+        readPosition += maxBufferDelaySize;
+    }
+    
+    int indexY0 = (int) readPosition - 1;
+    if (indexY0 < 0) {
+        indexY0 += maxBufferDelaySize;
+    }
+    
+    int indexY1 = readPosition;
+    if (indexY1 > maxBufferDelaySize) {
+        indexY1 -= maxBufferDelaySize;
+    }
+    
+    const float sampleY0 = mBuffer[indexY0];
+    const float sampleY1 = mBuffer[indexY1];
+    const float t = (int)readPosition - readPosition;
+    
+    double outSample = kapLinearInterp(sampleY0, sampleY1, t);
+    
+    return outSample;
 }
