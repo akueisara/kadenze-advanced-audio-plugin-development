@@ -96,13 +96,15 @@ void KadenzeAudioPluginAudioProcessor::prepareToPlay (double sampleRate, int sam
 {
     for (int i = 0; i < 2; i++) {
         mDelay[i]->setSampleRate(sampleRate);
+        mLfo[i]->setSampleRate(sampleRate);
     }
 }
 
 void KadenzeAudioPluginAudioProcessor::releaseResources()
 {
     for (int i = 0; i < 2; i++) {
-        mDelay[i].reset();
+        mDelay[i]->reset();
+        mLfo[i]->reset();
     }
 }
 
@@ -166,12 +168,18 @@ void KadenzeAudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& b
                                 channelData,
                                 numSamples);
         
+        mLfo[channel]->process(0.25,
+                               0.5,
+                               numSamples);
+        
         mDelay[channel]->process(channelData,
                                  0.25,
                                  0.5,
                                  0.35,
+                                 mLfo[channel]->getBuffer(),
                                  channelData,
                                  numSamples);
+        
         
         // ..do something to the data...
     }
@@ -207,6 +215,7 @@ void KadenzeAudioPluginAudioProcessor::initializeDSP()
     for (int i = 0; i < 2; i++) {
         mGain[i].reset(new KAPGain());
         mDelay[i].reset(new KAPDelay());
+        mLfo[i].reset(new KAPLfo());
     }
 }
 

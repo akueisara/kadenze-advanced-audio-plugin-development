@@ -24,11 +24,12 @@ KAPLfo::~KAPLfo()
 void KAPLfo::reset()
 {
     mPhase = 0.0f;
+    juce::zeromem(mBuffer, sizeof(double) * maxBufferSize);
 }
 
 void KAPLfo::setSampleRate(double inSampleRate)
 {
-    juce::zeromem(mBuffer, sizeof(double) * maxBufferSize);
+    mSampleRate = inSampleRate;
 }
 
 void KAPLfo::process(float inRate,

@@ -27,6 +27,7 @@ public:
                  float inTime,
                  float inFeedback,
                  float inWetDry,
+                 float* inModulationBuffer,
                  float* outAudio,
                  int inNumSamplesToRender);
     
