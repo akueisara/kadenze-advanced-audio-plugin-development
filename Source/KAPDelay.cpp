@@ -31,7 +31,7 @@ void KAPDelay::setSampleRate(double inSampleRate)
 
 void KAPDelay::reset()
 {
-    juce::zeromem(mBuffer, sizeof(double) * maxBufferDelaySize);
+    juce::zeromem(mBuffer, sizeof(double) * maxBufferSize);
 }
 
 void KAPDelay::process(float* inAudio,
@@ -59,8 +59,8 @@ void KAPDelay::process(float* inAudio,
         
         mDelayIndex = mDelayIndex + 1;
         
-        if (mDelayIndex >= maxBufferDelaySize) {
-            mDelayIndex -= maxBufferDelaySize;
+        if (mDelayIndex >= maxBufferSize) {
+            mDelayIndex -= maxBufferSize;
         }
     }
 }
@@ -70,17 +70,17 @@ double KAPDelay::getInterpolatedSample(float inDelayTimeInSamples)
     double readPosition = (double) mDelayIndex - inDelayTimeInSamples;
     
     if (readPosition < 0.0f) {
-        readPosition += maxBufferDelaySize;
+        readPosition += maxBufferSize;
     }
     
     int indexY0 = (int) readPosition - 1;
     if (indexY0 <= 0) {
-        indexY0 += maxBufferDelaySize;
+        indexY0 += maxBufferSize;
     }
     
     int indexY1 = readPosition;
-    if (indexY1 > maxBufferDelaySize) {
-        indexY1 -= maxBufferDelaySize;
+    if (indexY1 > maxBufferSize) {
+        indexY1 -= maxBufferSize;
     }
     
     const float sampleY0 = mBuffer[indexY0];

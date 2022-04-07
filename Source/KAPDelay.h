@@ -10,8 +10,7 @@
 
 #pragma once
 
-// The size has to be larger than delayTimeInSamples
-const int maxBufferDelaySize = 192000;
+#include "KAPAudioHelpers.h"
 
 class KAPDelay
 {
@@ -37,7 +36,7 @@ private:
     double getInterpolatedSample(float inDelayTimeInSamples);
     
     double mSampleRate;
-    double mBuffer[maxBufferDelaySize];
+    double mBuffer[maxBufferSize];
     double mFeedbackSample;
     
     int mDelayIndex;
