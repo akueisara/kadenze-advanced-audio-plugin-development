@@ -9,3 +9,23 @@
 */
 
 #include "KAPPanelBase.h"
+
+KAPPanelBase::KAPPanelBase(KadenzeAudioPluginAudioProcessor* inProcessor)
+: mProcessor(inProcessor)
+{
+    
+}
+
+KAPPanelBase::~KAPPanelBase()
+{
+    
+}
+
+void KAPPanelBase::paint(juce::Graphics& g)
+{
+    g.setColour(juce::Colours::white);
+    g.fillAll();
+    
+    g.setColour(juce::Colours::black);
+    g.drawRect(1, 1, getWidth() - 1, getHeight() - 1, 2);
+}

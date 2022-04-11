@@ -30,6 +30,8 @@
     <GROUP id="{3BF589E7-C475-21E6-8EF1-EC49723C5104}" name="Helpers">
       <FILE id="L8eSoR" name="KAPAudioHelpers.h" compile="0" resource="0"
             file="Source/KAPAudioHelpers.h" xcodeResource="0"/>
+      <FILE id="phLu28" name="KAPInterfaceDefines.h" compile="0" resource="0"
+            file="Source/KAPInterfaceDefines.h"/>
     </GROUP>
     <GROUP id="{63A13A76-A15A-C972-96FE-7B0DC435962B}" name="DSP">
       <FILE id="huw9m4" name="KAPDelay.cpp" compile="1" resource="0" file="Source/KAPDelay.cpp"/>
