@@ -4,6 +4,29 @@
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
               jucerFormatVersion="1">
   <MAINGROUP id="H4R1kB" name="KadenzeAudioPlugin">
+    <GROUP id="{DC1A4475-3209-937C-3E57-6ED47FBB25CA}" name="Panels">
+      <FILE id="GiBHNj" name="KAPPanelBase.cpp" compile="1" resource="0"
+            file="Source/KAPPanelBase.cpp"/>
+      <FILE id="nKhXdK" name="KAPPanelBase.h" compile="0" resource="0" file="Source/KAPPanelBase.h"/>
+      <FILE id="IIxzPp" name="KAPCenterPanel.cpp" compile="1" resource="0"
+            file="Source/KAPCenterPanel.cpp"/>
+      <FILE id="yh52dw" name="KAPCenterPanel.h" compile="0" resource="0"
+            file="Source/KAPCenterPanel.h"/>
+      <FILE id="obm85s" name="KAPCenterPanelMenuBar.cpp" compile="1" resource="0"
+            file="Source/KAPCenterPanelMenuBar.cpp"/>
+      <FILE id="KvHG43" name="KAPCenterPanelMenuBar.h" compile="0" resource="0"
+            file="Source/KAPCenterPanelMenuBar.h"/>
+      <FILE id="HFJw41" name="KAPFxPanel.cpp" compile="1" resource="0" file="Source/KAPFxPanel.cpp"/>
+      <FILE id="WfUIxP" name="KAPFxPanel.h" compile="0" resource="0" file="Source/KAPFxPanel.h"/>
+      <FILE id="CVCQgs" name="KAPGainPanel.cpp" compile="1" resource="0"
+            file="Source/KAPGainPanel.cpp"/>
+      <FILE id="CPTorb" name="KAPGainPanel.h" compile="0" resource="0" file="Source/KAPGainPanel.h"/>
+      <FILE id="oI8l1R" name="KAPMainPanel.cpp" compile="1" resource="0"
+            file="Source/KAPMainPanel.cpp"/>
+      <FILE id="Kq6azf" name="KAPMainPanel.h" compile="0" resource="0" file="Source/KAPMainPanel.h"/>
+      <FILE id="pXQhQE" name="KAPTopPanel.cpp" compile="1" resource="0" file="Source/KAPTopPanel.cpp"/>
+      <FILE id="oU70Ss" name="KAPTopPanel.h" compile="0" resource="0" file="Source/KAPTopPanel.h"/>
+    </GROUP>
     <GROUP id="{3BF589E7-C475-21E6-8EF1-EC49723C5104}" name="Helpers">
       <FILE id="L8eSoR" name="KAPAudioHelpers.h" compile="0" resource="0"
             file="Source/KAPAudioHelpers.h" xcodeResource="0"/>
