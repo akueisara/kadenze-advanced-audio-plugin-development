@@ -10,7 +10,7 @@
 
 #pragma once
 
-#define MAIN_PANEL_WIDTH             700
+#define MAIN_PANEL_WIDTH             750
 #define MAIN_PANEL_HEIGHT            300
 
 #define TOP_PANEL_WIDTH              MAIN_PANEL_WIDTH
