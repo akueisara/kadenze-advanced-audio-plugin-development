@@ -9,15 +9,15 @@
 */
 
 #include "KAPFxPanel.h"
+#include "KAPHelperFunctions.h"
 
 KAPFxPanel::KAPFxPanel(KadenzeAudioPluginAudioProcessor* inProcessor)
-:   KAPPanelBase(inProcessor),
-    mStyle(kKAPFxPanelStyle_Delay)
+:   KAPPanelBase(inProcessor)
 {
     setSize(FX_PANEL_WIDTH,
             FX_PANEL_HEIGHT);
     
-//    setFxPanelStyle(kKAPFxPanelStyle_Chorus);
+    setFxPanelStyle(kKAPFxPanelStyle_Chorus);
 }
 
 KAPFxPanel::~KAPFxPanel()
@@ -33,12 +33,12 @@ void KAPFxPanel::paint(juce::Graphics& g)
     {
         case(kKAPFxPanelStyle_Delay): {
             
-            g.drawFittedText("DELAY", 0, 0, getWidth(), getHeight(), juce::Justification::centred, 1);
+            g.drawFittedText("DELAY", 0, 0, getWidth(), getHeight() * 0.75, juce::Justification::centred, 1);
         } break;
             
         case(kKAPFxPanelStyle_Chorus): {
             
-            g.drawFittedText("CHORUS", 0, 0, getWidth(), getHeight(), juce::Justification::centred, 1);
+            g.drawFittedText("CHORUS", 0, 0, getWidth(), getHeight() * 0.75, juce::Justification::centred, 1);
         } break;
             
         case(kKAPFxPanelStyle_TotalNumStyles): {
@@ -47,6 +47,11 @@ void KAPFxPanel::paint(juce::Graphics& g)
             g.drawFittedText("no no no", 0, 0, getWidth(), getHeight(), juce::Justification::centred, 1);
             jassertfalse;
         } break;
+    }
+    
+    // paint labels
+    for(int i = 0; i < mSliders.size(); i++) {
+        paintComponentLabel(g, mSliders[i]);
     }
 }
 
