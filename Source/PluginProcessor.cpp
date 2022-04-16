@@ -166,7 +166,7 @@ void KadenzeAudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& b
     {
         auto* channelData = buffer.getWritePointer (channel);
         
-        mGain[channel]->process(channelData,
+        mInputGain[channel]->process(channelData,
                                 getParameter(kParameter_InputGain),
                                 channelData,
                                 numSamples);
@@ -185,8 +185,10 @@ void KadenzeAudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& b
                                  channelData,
                                  numSamples);
         
-        
-        // ..do something to the data...
+        mOutputGain[channel]->process(channelData,
+                                getParameter(kParameter_OutputGain),
+                                channelData,
+                                numSamples);
     }
 }
 
@@ -218,7 +220,8 @@ void KadenzeAudioPluginAudioProcessor::setStateInformation (const void* data, in
 void KadenzeAudioPluginAudioProcessor::initializeDSP()
 {
     for (int i = 0; i < 2; i++) {
-        mGain[i].reset(new KAPGain());
+        mInputGain[i].reset(new KAPGain());
+        mOutputGain[i].reset(new KAPGain());
         mDelay[i].reset(new KAPDelay());
         mLfo[i].reset(new KAPLfo());
     }

@@ -30,7 +30,7 @@ static juce::String KAPParameterID [kParameter_TotalNumParameters] =
     "Feedback",
     "Wet Dry",
     "Type",
-    "OutputGain"
+    "Output Gain",
     "Modulation Rate",
     "Modulation Depth",
 };
