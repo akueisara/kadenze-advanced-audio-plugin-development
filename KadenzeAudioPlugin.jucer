@@ -4,6 +4,16 @@
               useAppConfig="0" addUsingNamespaceToJuceHeader="0" displaySplashScreen="1"
               jucerFormatVersion="1">
   <MAINGROUP id="H4R1kB" name="KadenzeAudioPlugin">
+    <GROUP id="{6417EC2C-A053-702F-60E5-211671384A80}" name="Patameter Control">
+      <FILE id="FVrw5h" name="KAPParameterComboBox.cpp" compile="1" resource="0"
+            file="Source/KAPParameterComboBox.cpp"/>
+      <FILE id="X2Gegj" name="KAPParameterComboBox.h" compile="0" resource="0"
+            file="Source/KAPParameterComboBox.h"/>
+      <FILE id="KrYcxF" name="KAPParameterSlider.cpp" compile="1" resource="0"
+            file="Source/KAPParameterSlider.cpp"/>
+      <FILE id="D7J1Ph" name="KAPParameterSlider.h" compile="0" resource="0"
+            file="Source/KAPParameterSlider.h"/>
+    </GROUP>
     <GROUP id="{DC1A4475-3209-937C-3E57-6ED47FBB25CA}" name="Panels">
       <FILE id="GiBHNj" name="KAPPanelBase.cpp" compile="1" resource="0"
             file="Source/KAPPanelBase.cpp"/>
