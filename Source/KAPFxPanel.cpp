@@ -16,6 +16,8 @@ KAPFxPanel::KAPFxPanel(KadenzeAudioPluginAudioProcessor* inProcessor)
 {
     setSize(FX_PANEL_WIDTH,
             FX_PANEL_HEIGHT);
+    
+//    setFxPanelStyle(kKAPFxPanelStyle_Chorus);
 }
 
 KAPFxPanel::~KAPFxPanel()
@@ -45,11 +47,64 @@ void KAPFxPanel::paint(juce::Graphics& g)
             g.drawFittedText("no no no", 0, 0, getWidth(), getHeight(), juce::Justification::centred, 1);
             jassertfalse;
         } break;
-            
     }
 }
 
 void KAPFxPanel::setFxPanelStyle(KAPFxPanelStyle inStyle)
 {
     mStyle = inStyle;
+    
+    mSliders.clear();
+    
+    const int sliderSize = 56;
+    int x = 130;
+    int y = getHeight() * 0.5 - sliderSize * 0.5;
+    
+    switch (mStyle)
+    {
+        case(kKAPFxPanelStyle_Delay): {
+            
+            createKAPParameterSlider(this, mProcessor, mSliders, kParameter_DelayTime, x, y, sliderSize);
+            x += sliderSize * 2;
+            
+            createKAPParameterSlider(this, mProcessor, mSliders, kParameter_DelayFeedback, x, y, sliderSize);
+            x += sliderSize * 2;
+            
+            createKAPParameterSlider(this, mProcessor, mSliders, kParameter_DelayWetDry, x, y, sliderSize);
+            
+        } break;
+            
+        case(kKAPFxPanelStyle_Chorus): {
+            
+            createKAPParameterSlider(this, mProcessor, mSliders, kParameter_ModulationRate, x, y, sliderSize);
+            x += sliderSize * 2;
+            
+            createKAPParameterSlider(this, mProcessor, mSliders, kParameter_ModulationDepth, x, y, sliderSize);
+            x += sliderSize * 2;
+            
+            createKAPParameterSlider(this, mProcessor, mSliders, kParameter_DelayWetDry, x, y, sliderSize);
+            
+        } break;
+            
+        case(kKAPFxPanelStyle_TotalNumStyles): {
+            
+            // this shouldn't happen!
+            jassertfalse;
+        } break;
+            
+    }
+}
+
+void KAPFxPanel::createKAPParameterSlider(juce::Component* component,
+                              KadenzeAudioPluginAudioProcessor* processor,
+                              juce::OwnedArray<KAPParameterSlider>& sliders,
+                              KAPParameter kParameter,
+                              int x,
+                              int y,
+                              int sliderSize)
+{
+    KAPParameterSlider* slider = new KAPParameterSlider(processor->parameters, KAPParameterID[kParameter]);
+    slider->setBounds(x, y, sliderSize, sliderSize);
+    component->addAndMakeVisible(slider);
+    sliders.add(slider);
 }

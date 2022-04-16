@@ -12,6 +12,9 @@
 
 #include "KAPPanelBase.h"
 
+#include "KAPParameters.h"
+#include "KAPParameterSlider.h"
+
 enum KAPFxPanelStyle
 {
     kKAPFxPanelStyle_Delay,
@@ -34,4 +37,14 @@ public:
 private:
     
     KAPFxPanelStyle mStyle;
+    
+    juce::OwnedArray<KAPParameterSlider> mSliders;
+    
+    void createKAPParameterSlider(juce::Component* component,
+                                  KadenzeAudioPluginAudioProcessor* processor,
+                                  juce::OwnedArray<KAPParameterSlider>& sliders,
+                                  KAPParameter kParameter,
+                                  int x,
+                                  int y,
+                                  int sliderSize);
 };
