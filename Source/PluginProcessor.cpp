@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "KAPParameters.h"
 
 //==============================================================================
 KadenzeAudioPluginAudioProcessor::KadenzeAudioPluginAudioProcessor()
@@ -19,9 +20,11 @@ KadenzeAudioPluginAudioProcessor::KadenzeAudioPluginAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+    parameters(*this, nullptr)
 #endif
 {
+    initializeParameters();
     initializeDSP();
 }
 
@@ -164,20 +167,20 @@ void KadenzeAudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& b
         auto* channelData = buffer.getWritePointer (channel);
         
         mGain[channel]->process(channelData,
-                                0.5,
+                                getParameter(kParameter_InputGain),
                                 channelData,
                                 numSamples);
         
-        float rate = channel==0 ? 0 : 0.25;
+        float rate = channel==0 ? 0.0f : getParameter(kParameter_ModulationRate);
         
         mLfo[channel]->process(rate,
-                               1.0,
+                               getParameter(kParameter_ModulationDepth),
                                numSamples);
         
         mDelay[channel]->process(channelData,
-                                 0.25,
-                                 0.5,
-                                 1.0,
+                                 getParameter(kParameter_DelayTime),
+                                 getParameter(kParameter_DelayFeedback),
+                                 getParameter(kParameter_DelayWetDry),
                                  mLfo[channel]->getBuffer(),
                                  channelData,
                                  numSamples);
@@ -219,6 +222,22 @@ void KadenzeAudioPluginAudioProcessor::initializeDSP()
         mDelay[i].reset(new KAPDelay());
         mLfo[i].reset(new KAPLfo());
     }
+}
+
+void KadenzeAudioPluginAudioProcessor::initializeParameters()
+{
+    for (int i = 0; i < kParameter_TotalNumParameters; i++) {
+        parameters.createAndAddParameter(KAPParameterID[i],
+                                         KAPParameterID[i],
+                                         KAPParameterID[i],
+                                         juce::NormalisableRange<float>(0.0f, 1.0f),
+                                         0.5f,
+                                         nullptr,
+                                         nullptr);
+    }
+    
+    // do this to avoid the assert in the newer version of JUCE
+    parameters.state = juce::ValueTree(juce::Identifier("KAP"));
 }
 
 //==============================================================================
