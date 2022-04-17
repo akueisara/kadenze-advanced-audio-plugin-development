@@ -17,7 +17,7 @@ KAPFxPanel::KAPFxPanel(KadenzeAudioPluginAudioProcessor* inProcessor)
     setSize(FX_PANEL_WIDTH,
             FX_PANEL_HEIGHT);
     
-    setFxPanelStyle(kKAPFxPanelStyle_Chorus);
+    setFxPanelStyle(kKAPFxPanelStyle_Delay);
 }
 
 KAPFxPanel::~KAPFxPanel()
@@ -112,4 +112,11 @@ void KAPFxPanel::createKAPParameterSlider(juce::Component* component,
     slider->setBounds(x, y, sliderSize, sliderSize);
     component->addAndMakeVisible(slider);
     sliders.add(slider);
+}
+
+void KAPFxPanel::comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged)
+{
+    KAPFxPanelStyle style = (KAPFxPanelStyle) comboBoxThatHasChanged->getSelectedItemIndex();
+    
+    setFxPanelStyle(style);
 }

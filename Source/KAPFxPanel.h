@@ -23,7 +23,8 @@ enum KAPFxPanelStyle
 };
 
 class KAPFxPanel
-: public KAPPanelBase
+:   public KAPPanelBase,
+    public juce::ComboBox::Listener
 {
 public:
 
@@ -33,6 +34,8 @@ public:
     void paint(juce::Graphics& g) override;
     
     void setFxPanelStyle(KAPFxPanelStyle inStyle);
+    
+    void comboBoxChanged (juce::ComboBox* comboBoxThatHasChanged) override;
     
 private:
     
