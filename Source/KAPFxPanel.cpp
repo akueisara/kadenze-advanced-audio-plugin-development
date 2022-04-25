@@ -17,7 +17,11 @@ KAPFxPanel::KAPFxPanel(KadenzeAudioPluginAudioProcessor* inProcessor)
     setSize(FX_PANEL_WIDTH,
             FX_PANEL_HEIGHT);
     
-    setFxPanelStyle(kKAPFxPanelStyle_Delay);
+    auto& parameters = mProcessor->getParameters();
+    juce::AudioProcessorParameterWithID* delayType = (juce::AudioProcessorParameterWithID*) parameters.getUnchecked(kParameter_DelayType);
+    const int currentStyle = (int) delayType->getValue();
+    
+    setFxPanelStyle((KAPFxPanelStyle) currentStyle);
 }
 
 KAPFxPanel::~KAPFxPanel()
@@ -98,6 +102,8 @@ void KAPFxPanel::setFxPanelStyle(KAPFxPanelStyle inStyle)
         } break;
             
     }
+    
+    repaint();
 }
 
 void KAPFxPanel::createKAPParameterSlider(juce::Component* component,

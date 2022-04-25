@@ -19,11 +19,14 @@ KAPCenterPanelMenuBar::KAPCenterPanelMenuBar(KadenzeAudioPluginAudioProcessor* i
     
     const int width = 85;
     
-    mFxTypeComboBox.reset(new KAPParameterComboBox(mProcessor->parameters, KAPParameterID[kParameter_DelayTime]));
+    
+    mFxTypeComboBox.reset(new KAPParameterComboBox(mProcessor->parameters, KAPParameterID[kParameter_DelayType]));
     mFxTypeComboBox->setBounds(getWidth() - width, 0, width, getHeight());
     mFxTypeComboBox->addItem("DELAY", 1);
     mFxTypeComboBox->addItem("CHORUS", 2);
-    mFxTypeComboBox->setSelectedItemIndex(0, juce::dontSendNotification);
+    auto& parameters = mProcessor->getParameters();
+    juce::AudioProcessorParameterWithID* delayType = (juce::AudioProcessorParameterWithID*) parameters.getUnchecked(kParameter_DelayType);
+    mFxTypeComboBox->setSelectedItemIndex((int) delayType->getValue(), juce::dontSendNotification);
     addAndMakeVisible(mFxTypeComboBox.get());
 }
 

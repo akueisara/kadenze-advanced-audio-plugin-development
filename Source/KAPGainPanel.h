@@ -21,6 +21,8 @@ public:
     KAPGainPanel(KadenzeAudioPluginAudioProcessor* inProcessor);
     ~KAPGainPanel();
     
+    void paint(juce::Graphics& g) override;
+    
     void setParameterID(int inParameterID);
     
 private:
