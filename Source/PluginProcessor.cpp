@@ -213,12 +213,29 @@ void KadenzeAudioPluginAudioProcessor::getStateInformation (juce::MemoryBlock& d
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    
+    juce::XmlElement preset("KAP_StateInfo");
+    
+    juce::XmlElement* presetBody = new juce::XmlElement("KAP_Preset");
+    
+    mPresetManager->getXmlForPreset(presetBody);
+    copyXmlToBinary(preset, destData);
 }
 
 void KadenzeAudioPluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    
+    juce::XmlElement* xmlState = getXmlFromBinary(data, sizeInBytes).get();
+    
+    if (xmlState) {
+        forEachXmlChildElement(*xmlState, subChild) {
+            mPresetManager->loadPresetForXml(subChild);
+        }
+    } else {
+        jassertfalse;
+    }
 }
 
 void KadenzeAudioPluginAudioProcessor::initializeDSP()
