@@ -25,7 +25,10 @@ KadenzeAudioPluginAudioProcessor::KadenzeAudioPluginAudioProcessor()
 #endif
 {
     initializeParameters();
+    
     initializeDSP();
+    
+    mPresetManager.reset(new KAPPresetManager(this));
 }
 
 KadenzeAudioPluginAudioProcessor::~KadenzeAudioPluginAudioProcessor()
